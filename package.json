@@ -1,0 +1,19 @@
+{
+  "name": "reduxify",
+  "version": "1.0.0",
+  "description": "Code to help with some of the boilerplate with react-redux, automatically mapping dispatch, actions, and specified reducers to component props",
+  "main": "reduxify.js",
+  "keywords": [
+    "react",
+    "redux",
+    "react-redux"
+  ],
+  "author": "Brian Boyko",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.13.1",
+    "react": "^15.1.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2"
+  }
+}
