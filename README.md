@@ -1,6 +1,6 @@
 # reduxify
 
-Reduxify is a small utility designed to quickly connect your react components to redux stores. One line of code maps your actions and reducers to the props of your component.  
+Reduxify is a small NPM module utility designed to quickly connect your react components to redux stores. One line of code maps your actions and reducers to the props of your component.  
 
 ## Installation:
 
