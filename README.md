@@ -1,3 +1,9 @@
+## N.B.:
+
+Both Brian Boyko and Johnathan Sun came up with similar versions of this code independently.
+
+Johnathan Sun's prior art can be found here: https://gist.github.com/sunyang713/ebb9b3573aaf90f29e78
+
 # reduxify
 
 Reduxify is a small NPM module utility designed to quickly connect your react components to redux stores. One line of code maps your actions and reducers to the props of your component.  
@@ -110,4 +116,8 @@ This package no longer depends on Lodash.
 
 This package now supports custom props passed in as a fourth parameter.
 
-This package is backwards compatable with 1.0.0, and can be dropped in as a replacement. 
+This package is backwards compatable with 1.0.0, and can be dropped in as a replacement.
+
+## Notes for 1.0.2
+
+Johnathan Sun contacted Brian Boyko and pointed out he had done very similar work, as such, he and Brian are now listed as co-contributors.  
