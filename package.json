@@ -3,12 +3,24 @@
   "version": "1.0.1",
   "description": "Code to help with some of the boilerplate with react-redux, automatically mapping dispatch, actions, specified keys from the redux store, and custom methods to component props",
   "main": "reduxify.js",
+  "bugs": {
+    "url": "https://github.com/brianboyko/reduxify/issues",
+    "email": "brian.boyko@gmail.com"
+  },
   "keywords": [
     "react",
     "redux",
     "react-redux"
   ],
-  "author": "Brian Boyko",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brianboyko/reduxify"
+  },
+  "author": {
+    "name": "Brian Boyko",
+    "email": "brian.boyko@gmail.com",
+    "url": "http://brianboyko.github.io/"
+  },
   "license": "MIT",
   "dependencies": {
     "react": "^15.1.0",
