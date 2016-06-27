@@ -12,29 +12,59 @@ npm install --save reduxify
 
 ```
 export default reduxify(
-  actions, // an object with a single property, "default" which contains all your actions.
-  reducers, // an array of strings of the names of reducers you want to map to this particular component
-  component // the component you wish to map actions and props to.
+  actions,         // an object that contains your action creators.
+                   // the action creators can be either defined in the root of
+                   // the action object, or in actions.default;
+  keyList,         // an array of strings of the names of keys in the Redux store
+                   // that you want to map to this particular
+                   // component
+  component,       // the component you wish to map actions and props to.
+  optionalMethods  // [OPTIONAL] you can define optional methods here that you
+                   // wish to bind to props. (i.e., getState() and others);  
 )
 ```
 
-A small example, with an action called "incrementCounter" and a reducer called "counter"
+A small example:
 
 ```
-// ./actions/index.js
+// ../actions/index.js
 //=====================
 import * as counterActions from './actionsCounter'
 export default Object.assign({}, counterActions);
+//=====================
+
+// ../utilities/addNums.js
+//=====================
+export default const addNums = (a, b) => (a + b);
 //=====================
 
 // ./containers/App.js
 //=====================
 import React, { Component } from 'react';
 import * as actions from '../actions';
-// actions is an option that contains "{ default: {ALL_YOUR_ACTIONS} }"
+import addNums from '../utilities/addNums'
 import reduxify from 'reduxify';
+import {getState} from '../store/configStore';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.add = this.add.bind(this);
+    this.getStore = this.getStore.bind(this);
+    this.state = {
+      total: 0,
+      theEntireReduxStore: {},
+    }
+  }
+
+  add(){
+    this.setState({total: this.props.addNums(this.props.counterAlpha, this.props.counterBeta)})
+  }
+
+  getStore(){
+    this.setState({theEntireReduxStore: JSON.stringify(this.props.getState(), null, 2)})
+  }
+
   render() {
     return (<div>
       <h2>Redux Store Counter:
@@ -49,12 +79,20 @@ class App extends Component {
       <button onClick={this.props.actions.incrementCounterBeta}>
         Increment Beta
       </button>
+      <h2>Total:
+        <b>{this.state.total}</b>
+      </h2>
+      <button onClick={this.add}>Add Numbers</button>
+      <h2>The Entire Redux Store:
+        <pre>{this.state.theEntireReduxStore}</pre>
+      </h2>
+      <button onClick={this.props.getStore}>Get Everything</button>
       </div>
     );
   }
 }
 
-export default reduxify(actions, ['counterAlpha', 'counterBeta'], App);
+export default reduxify(actions, ['counterAlpha', 'counterBeta'], App, {addNums, getState});
 //=====================
 
 ```
@@ -62,13 +100,14 @@ export default reduxify(actions, ['counterAlpha', 'counterBeta'], App);
 ## Features:
 
 * You can access actions via "this.props.actions.NAME_OF_ACTION"
-* You can access reducers via "this.props.NAME_OF_REDUCER"
+* You can access keys to the redux store via "this.props.NAME_OF_KEY"
 * You can access the dispatch via "this.props.dispatch"
+* You can access any other methods you provide in the 4th parameter via "this.props.NAME_OF_METHOD"
 
-## Notes & Future features:
+## Notes for 1.0.1
 
-This package depends on lodash, specifically, the "pick" method.
+This package no longer depends on Lodash.
 
-* I'd like to find a way to map "getState()" to props without requiring importing the "getState" method from the store directly, but this is not currently supported by the "connect" method in react-redux. One approach for this, might be to have a fourth property which does nothing if undefined, but which is getState() for those who choose to import it from the store.  This strikes me as inelegant, however.
+This package now supports custom props passed in as a fourth parameter.
 
-* Another option that I was back-and-forth on was the ability to map all the reducers in your root reducer to props, (and may add this back in as an option) but the problem with doing this as a default is that all reduxified components will end up re-rendering when any reducer changes, leading to wasteful renders.  Forcing users to specify the specific reducers they need prevents this waste.  
+This package is backwards compatable with 1.0.0, and can be dropped in as a replacement. 
