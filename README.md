@@ -1,8 +1,8 @@
 ## N.B.:
 
-Both Brian Boyko and Johnathan Sun came up with similar versions of this code independently.
+Both Brian Boyko and Jonathan Sun came up with similar versions of this code independently.
 
-Johnathan Sun's prior art can be found here: https://gist.github.com/sunyang713/ebb9b3573aaf90f29e78
+Jonathan Sun's prior art can be found here: https://gist.github.com/sunyang713/ebb9b3573aaf90f29e78
 
 # reduxify
 
@@ -16,7 +16,7 @@ npm install --save reduxify
 
 ## Basic Usage:
 
-```
+```javascript
 export default reduxify(
   actions,         // an object that contains your action creators.
                    // the action creators can be either defined in the root of
@@ -32,7 +32,7 @@ export default reduxify(
 
 A small example:
 
-```
+```javascript
 // ../actions/index.js
 //=====================
 import * as counterActions from './actionsCounter'
@@ -120,4 +120,4 @@ This package is backwards compatable with 1.0.0, and can be dropped in as a repl
 
 ## Notes for 1.0.2
 
-Johnathan Sun contacted Brian Boyko and pointed out he had done very similar work, as such, he and Brian are now listed as co-contributors.  
+Jonathan Sun contacted Brian Boyko and pointed out he had done very similar work, as such, he and Brian are now listed as co-contributors.  
