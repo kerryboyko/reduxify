@@ -1,12 +1,6 @@
-## N.B.:
-
-Both Brian Boyko and Jonathan Sun came up with similar versions of this code independently.
-
-Jonathan Sun's prior art can be found here: https://gist.github.com/sunyang713/ebb9b3573aaf90f29e78
-
 # reduxify
 
-Reduxify is a small NPM module utility designed to quickly connect your react components to redux stores. One line of code maps your actions and reducers to the props of your component.  
+Enhances the [react-redux/connect](https://github.com/reactjs/react-redux) function for simple cases.
 
 ## Installation:
 
@@ -14,101 +8,51 @@ Reduxify is a small NPM module utility designed to quickly connect your react co
 npm install --save reduxify
 ```
 
-## Basic Usage:
+## API:
+
+### `reduxify({[state], [selector], [actions]})`
+
+#### Arguments
+
+1. [`state`] *(String)*: A String corresponding to the name of a top-level branch of the app state tree.
+
+2. [`selector`] *(function)*: A function mapping state to props. A memoized selector function describing specific selection logic. The selector efficiently computes derived data from the store. Using [Reselect](https://github.com/reactjs/reselect) is recommended. If specified, the selector mapping will override the `state` parameter.
+
+3. [`actions`] *(Object)*: An object containing actions.
+
+#### Returns
+
+*(function)*: An enhanced `connect` function for use on a React component class.
+
+#### Example
 
 ```javascript
-export default reduxify(
-  actions,         // an object that contains your action creators.
-                   // the action creators can be either defined in the root of
-                   // the action object, or in actions.default;
-  keyList,         // an array of strings of the names of keys in the Redux store
-                   // that you want to map to this particular
-                   // component
-  component,       // the component you wish to map actions and props to.
-  optionalMethods  // [OPTIONAL] you can define optional methods here that you
-                   // wish to bind to props. (i.e., getState() and others);  
-)
-```
+import React, { Component } from 'react'
+import reduxify from 'store/reduxify'
+import { action1, action2 } from 'actions/myActions'
+import MyComponent from 'components/MyComponent'
 
-A small example:
-
-```javascript
-// ../actions/index.js
-//=====================
-import * as counterActions from './actionsCounter'
-export default Object.assign({}, counterActions);
-//=====================
-
-// ../utilities/addNums.js
-//=====================
-export default const addNums = (a, b) => (a + b);
-//=====================
-
-// ./containers/App.js
-//=====================
-import React, { Component } from 'react';
-import * as actions from '../actions';
-import addNums from '../utilities/addNums'
-import reduxify from 'reduxify';
-import {getState} from '../store/configStore';
-
-class App extends Component {
-  constructor(props){
-    super(props);
-    this.add = this.add.bind(this);
-    this.getStore = this.getStore.bind(this);
-    this.state = {
-      total: 0,
-      theEntireReduxStore: {},
-    }
-  }
-
-  add(){
-    this.setState({total: this.props.addNums(this.props.counterAlpha, this.props.counterBeta)})
-  }
-
-  getStore(){
-    this.setState({theEntireReduxStore: JSON.stringify(this.props.getState(), null, 2)})
-  }
+class MyContainer extends Component {
 
   render() {
-    return (<div>
-      <h2>Redux Store Counter:
-        <b>{this.props.counterAlpha}</b>
-      </h2>
-      <button onClick={this.props.actions.incrementCounterAlpha}>
-        Increment Alpha
-      </button>
-      <h2>Redux Store Counter:
-        <b>{this.props.counterBeta}</b>
-      </h2>
-      <button onClick={this.props.actions.incrementCounterBeta}>
-        Increment Beta
-      </button>
-      <h2>Total:
-        <b>{this.state.total}</b>
-      </h2>
-      <button onClick={this.add}>Add Numbers</button>
-      <h2>The Entire Redux Store:
-        <pre>{this.state.theEntireReduxStore}</pre>
-      </h2>
-      <button onClick={this.props.getStore}>Get Everything</button>
-      </div>
-    );
+    const { mySubState, actions } = props
+    return (
+      <MyComponent
+        prop1={ mySubState.value1 }
+        prop2={ mySubState.value2 }
+        action1={ actions.action1 }
+        action2={ actions.action2 }
+      />
+    )
   }
 }
 
-export default reduxify(actions, ['counterAlpha', 'counterBeta'], App, {addNums, getState});
+export default reduxify({
+  state: 'mySubState',
+  actions: { action1, action2 }
+})(MyContainer)
 //=====================
-
 ```
-
-## Features:
-
-* You can access actions via "this.props.actions.NAME_OF_ACTION"
-* You can access keys to the redux store via "this.props.NAME_OF_KEY"
-* You can access the dispatch via "this.props.dispatch"
-* You can access any other methods you provide in the 4th parameter via "this.props.NAME_OF_METHOD"
 
 ## Notes for 1.0.1
 
@@ -120,4 +64,11 @@ This package is backwards compatable with 1.0.0, and can be dropped in as a repl
 
 ## Notes for 1.0.2
 
-Jonathan Sun contacted Brian Boyko and pointed out he had done very similar work, as such, he and Brian are now listed as co-contributors.  
+Jonathan Sun contacted Brian Boyko and pointed out he had done very similar work, as such, he and Brian are now listed as co-contributors.
+
+## Notes for 1.0.3
+
+Simplify reduxify.
+ - Specify either a top-level app substate or supply a selector function.
+ - Supply actions as an object of actions instead of array
+ - Remove `component` and `optionalMethods` parameters
