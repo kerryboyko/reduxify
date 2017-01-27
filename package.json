@@ -1,15 +1,21 @@
 {
   "name": "reduxify",
   "version": "1.0.2",
-  "description": "Code to help with some of the boilerplate with react-redux, automatically mapping dispatch, actions, specified keys from the redux store, and custom methods to component props",
-  "main": "reduxify.js",
+  "description": "React-redux utility function for enhancing <connect>.",
+  "main": "dist",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "bugs": {
     "url": "https://github.com/brianboyko/reduxify/issues"
   },
   "keywords": [
     "react",
     "redux",
-    "react-redux"
+    "react-redux",
+    "reduxify"
   ],
   "repository": {
     "type": "git",
@@ -22,14 +28,24 @@
       "url": "http://brianboyko.github.io/"
     },
     {
-      "name": "Johnathan Sun",
+      "name": "Jonathan Sun",
+      "email": "sunyang713@hotmail.com",
       "url": "http://sunyang713.github.io/"
     }
   ],
   "license": "MIT",
-  "dependencies": {
-    "react": "^15.1.0",
-    "react-redux": "^4.4.5",
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.4.5",
+    "babel-preset-latest": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "react": "^15.3.1",
+    "react-redux": "^5.0.1",
+    "redux": "^3.5.2"
+  },
+  "externals": {
+    "react": "^15.3.1",
+    "react-redux": "^5.0.1",
     "redux": "^3.5.2"
   }
 }
